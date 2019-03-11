@@ -1,0 +1,60 @@
+#parse("templates/main_layout.vm")
+#@main_layout()
+
+<div class="container">
+    <div class="col-md-12 py-5 text-center">
+        <h2>$texts.getString('homepage.title')</h2>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display:#if($error==true) block #else none #end;" id="alertFail">
+        <strong>$texts.getString('error.message.title'): </strong> <span id="errorText">$texts.getString('error.message.text')</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <form action="/employees" method="get" class="needs-validation" validated>
+                <div class="alert alert-secondary" role="alert">
+                    <h3>$texts.getString('homepage.empoyee.id.title')</h3>
+                    <input type="text" class="form-control" id="employeeId" value="#if($employeeId)$employeeId#end" name="employeeId" placeholder="" pattern="[0-9]+([\.,][0-9]+)?" step="1">
+                    <div class="invalid-feedback">
+                        $texts.getString('error.amount-required')
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                #if($search == true)
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">$texts.getString('empoyee.table.id.label')</th>
+                            <th scope="col">$texts.getString('empoyee.table.name.label')</th>
+                            <th scope="col">$texts.getString('empoyee.table.type.label')</th>
+                            <th scope="col">$texts.getString('empoyee.table.role.label')</th>
+                            <th scope="col">$texts.getString('empoyee.table.salary.label')</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        #foreach($employee in $employees)
+                            <tr>
+                                <th scope="row">$employee.id</th>
+                                <td>$employee.name</td>
+                                <td>$employee.contractTypeName</td>
+                                <td>$employee.roleName</td>
+                                <td align="right">$employee.annualSalary</td>
+                            </tr>
+                        #end
+                        </tbody>
+                    </table>
+                    <hr class="mb-4">
+                #end
+                <input type="submit" value="$texts.getString('homepage.search.submit.text')" class="btn btn-success btn-lg btn-block" name="processLoadSubmit" id="processLoadSubmit">
+            </form>
+        </div>
+    </div>
+</div>
+#end
